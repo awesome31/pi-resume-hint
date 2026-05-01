@@ -1,19 +1,12 @@
 # pi-resume-hint
 
-A tiny [Pi](https://github.com/badlogic/pi-mono) extension that prints a quirky Codex-style resume hint when Pi exits.
+A tiny [Pi](https://github.com/badlogic/pi-mono) extension that prints a short, mildly dramatic resume hint when Pi exits.
 
-When you quit Pi, it prints a random exit message, the current session id, and the command to resume it:
+When you quit Pi, it prints a random exit message and the command to resume it:
 
 ```text
-╭─ Pi folded the session into a neat little burrito.
-│ Resume this session with:
-│   pi --session 123e4567-e89b-12d3-a456-426614174000
-│
-│ From any directory, use:
-│   cd '/path/to/project' && pi --session 123e4567-e89b-12d3-a456-426614174000
-│
-│ Session file: /Users/me/.pi/agent/sessions/.../session.jsonl
-╰────────────────────
+╭─ NOOOO don't go. Okay fine. Come back with:
+╰─ pi --session 123e4567-e89b-12d3-a456-426614174000
 ```
 
 ## Install

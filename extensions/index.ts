@@ -4,41 +4,57 @@ import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 const DISABLE_ENV = "PI_RESUME_HINT_DISABLE";
 
 const EXIT_MESSAGES = [
-  "Pi parked your brain dump safely.",
-  "Session tucked in. Blanket optional.",
-  "Your context goblin has been bottled.",
-  "Pi saved the breadcrumbs. No pigeons involved.",
-  "Session preserved in amber. Tiny dinosaur not included.",
-  "The terminal dragon is napping on your session.",
-  "Pi put a tiny bookmark in the multiverse.",
-  "Your agent adventure is now resumable lore.",
-  "Session saved. Future-you owes present-you a snack.",
-  "The conversation has been cryogenically frozen.",
-  "Pi folded the session into a neat little burrito.",
-  "Checkpoint acquired. Side quest may continue later.",
-  "The session squirrel buried this one carefully.",
-  "Pi bottled the vibes and labeled the cork.",
-  "Your tokens have gone to a cozy little cabin.",
-  "Session saved. The robots are pretending not to miss you.",
-  "Pi left a glowing trail back to this exact chaos.",
-  "The context gremlin salutes and stands down.",
-  "Session parked. Please validate your parking stub.",
-  "Pi saved your place in the code swamp.",
-  "The rubber duck has memorized where you stopped.",
-  "Session archived by a very serious raccoon.",
-  "Pi put this run in a tiny labeled jar.",
-  "The code cave remembers your footsteps.",
-  "Session saved. Your future self just high-fived you.",
-  "Pi dropped a pin on this debugging expedition.",
-  "The agent has powered down dramatically.",
-  "Session secured behind a suspiciously friendly wizard.",
-  "Your work-in-progress got its own little hammock.",
-  "Pi saved the plot twist for next time.",
+  "I'll be back... and so will your session:",
+  "May the source be with you. Return via:",
+  "You shall not pass... without this resume spell:",
+  "Here's looking at your stack trace, kid. Resume with:",
+  "There's no place like localhost. Tap your heels and run:",
+  "E.T. saved your session. Phone home with:",
+  "The code abides. Pick it back up with:",
+  "Houston, we have a resume command:",
+  "Life finds a way... back to this session:",
+  "Roads? Where we're going, we need sessions:",
+  "The Matrix has you. Re-enter with:",
+  "One does not simply quit without saving the command:",
+  "Winter is coming, but your context is safe:",
+  "The North remembers your tokens. Resume with:",
+  "I solemnly swear this session is up to no good:",
+  "Mischief managed? Not until you return with:",
+  "Yer a resumable session, Harry. Use:",
+  "Expecto contextum! Bring it back with:",
+  "The force ghost of your code whispers:",
+  "This is the way... back:",
+  "I have spoken. Resume with:",
+  "To boldly go back where you just were:",
+  "Make it so. Resume with:",
+  "Beam yourself back to this context with:",
+  "The One Ring to resume them all:",
+  "My precious context is waiting here:",
+  "Wakanda forever, sessions forever. Return with:",
+  "With great context comes great resumability:",
+  "I am Groot. Translation: resume with:",
+  "Avengers, reassemble this session with:",
+  "The multiverse saved this exact timeline:",
+  "A wizard is never late; neither is this command:",
+  "It's dangerous to go alone. Take this:",
+  "Scooby-Doo found the missing context. Jinkies:",
+  "Dunder Mifflin filed your session under 'important':",
+  "That's what she resumed. Use:",
+  "The One Where You Come Back With:",
+  "How you doin'? Your session says:",
+  "Suit up. Legendary context awaits at:",
+  "Have you tried turning the session back on with:",
+  "Bears. Beets. Battlestar resume command:",
+  "The truth is out there, and so is your session:",
+  "No soup for quitters. Resume with:",
+  "Say my session ID. Then run:",
+  "Yeah science! Your context survived:",
+  "I'm the one who resumes. Use:",
+  "Stranger things have happened than returning with:",
+  "The Upside Down kept your context warm:",
+  "Nobody puts this session in a corner. Resume with:",
+  "Hasta la vista, briefly. Come back with:",
 ] as const;
-
-function shellQuote(value: string): string {
-  return `'${value.replaceAll("'", `'\\''`)}'`;
-}
 
 function disabledByEnv(): boolean {
   const value = process.env[DISABLE_ENV]?.trim().toLowerCase();
@@ -49,21 +65,8 @@ function pickExitMessage(): string {
   return EXIT_MESSAGES[Math.floor(Math.random() * EXIT_MESSAGES.length)] ?? "Pi session saved.";
 }
 
-function buildHint(cwd: string, sessionId: string, sessionFile: string, exitMessage = pickExitMessage()): string {
-  const lines = [
-    "",
-    `╭─ ${exitMessage}`,
-    "│ Resume this session with:",
-    `│   pi --session ${sessionId}`,
-    "│",
-    "│ From any directory, use:",
-    `│   cd ${shellQuote(cwd)} && pi --session ${sessionId}`,
-  ];
-
-  lines.push("│", `│ Session file: ${sessionFile}`);
-
-  lines.push("╰────────────────────", "");
-  return `${lines.join("\n")}\n`;
+function buildHint(sessionId: string, exitMessage = pickExitMessage()): string {
+  return `\n╭─ ${exitMessage}\n╰─ pi --session ${sessionId}\n\n`;
 }
 
 export default function resumeHint(pi: ExtensionAPI) {
@@ -77,7 +80,7 @@ export default function resumeHint(pi: ExtensionAPI) {
         return;
       }
 
-      const hint = buildHint(ctx.cwd, sessionId, sessionFile);
+      const hint = buildHint(sessionId);
       if (ctx.hasUI) {
         ctx.ui.notify(hint.trim(), "info");
       } else {
@@ -93,6 +96,6 @@ export default function resumeHint(pi: ExtensionAPI) {
     const sessionFile = ctx.sessionManager.getSessionFile();
     if (!sessionId || !sessionFile || !existsSync(sessionFile)) return;
 
-    process.stderr.write(buildHint(ctx.cwd, sessionId, sessionFile));
+    process.stderr.write(buildHint(sessionId));
   });
 }
