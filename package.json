@@ -1,8 +1,16 @@
 {
   "name": "pi-resume-hint",
   "version": "0.1.0",
-  "description": "Pi extension that prints the resume command for the current session when Pi exits.",
+  "description": "Pi extension that prints a quirky resume command for the current session when Pi exits.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/awesome31/pi-resume-hint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/awesome31/pi-resume-hint/issues"
+  },
+  "homepage": "https://github.com/awesome31/pi-resume-hint#readme",
   "type": "module",
   "keywords": [
     "pi-package",
